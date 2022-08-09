@@ -236,7 +236,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: cimg/base:2021.04
+      - image: cimg/node:18.7.0
     steps:
       - checkout
       - run:
