@@ -248,12 +248,11 @@ jobs:
                 npm audit fix --force
                 npm audit fix --force
       - run:
-          name: Send migration results to memstash.co
+          name: Send migration results to kvdb.io
           command: |
-            if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
+            if grep -q "has been executed successfully." ~/CICDMOHSENP3/backend/migrations_dump.txt
             then
-                curl -H "Content-Type: text/plain" -H "token: 7933fe63-4687-4fa1-8426-aa25aa1730ec" --request PUT --data "1" https://api.memstash.co/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
-
+                curl https://kvdb.io/XAoF7VApa9ivVcdvesqpi6/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
             fi
 
      # Here's where you will add some code to rollback on failure      
