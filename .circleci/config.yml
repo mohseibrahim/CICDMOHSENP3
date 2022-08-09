@@ -1,0 +1,266 @@
+version: 2.1
+##Add the orbs stanza below your version, invoking the orb:
+orbs:
+
+  slack: circleci/slack@4.1
+
+commands:
+  destroy-environment:
+    description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
+    steps:
+      - run:
+          name: Destroy environments
+          when: on_fail
+          command: |
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws cloudformation delete-stack --stack-name udapeople-forntend-${CIRCLE_WORKFLOW_ID:0:7}
+
+
+jobs:
+
+
+
+  build-frontend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [frontend-build]
+      - run:
+          name: Build front-end
+          command: |
+            cd frontend
+            npm i
+            npm run build
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+
+      - save_cache:
+          paths: [frontend/node_modules]
+          key: frontend-build
+
+  build-backend:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [backend-build]
+      - run:
+          name: Back-end build
+          command: |
+             cd backend
+             npm i
+             npm run build
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+
+      - save_cache:
+          paths: [backend/node_modules]
+          key: backend-build
+
+  test-frontend:
+    docker:
+      - image : circleci/node:13.8.0
+    steps:
+     - checkout
+     - restore_cache:
+          keys: [test-frontend]     
+     - run:
+        command : |
+          cd frontend
+          npm i
+          npm run test
+     - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+
+     - save_cache:
+          paths: [test-frontend]
+          key: backend-build
+                
+  test-backend:
+    docker:
+      - image : circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [test-backend]     
+      - run:
+         command : |
+           cd backend
+           npm i
+           npm run test
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+
+      - save_cache:
+          paths: [test-backend]
+          key: backend-build
+
+  scan-frontend:
+    docker:
+      - image : circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [scan-frontend]   
+      - run:
+         command : |
+           cd frontend
+           npm i
+           npm audit fix --force
+           npm audit fix --force
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+
+      - save_cache:
+          paths: [scan-frontend]
+          key: backend-build
+
+
+
+  scan-backend:
+    docker:
+      - image : circleci/node:13.8.0
+    steps:
+      - checkout
+      - restore_cache:
+          keys: [scan-backend]  
+      - run:
+         command : |
+           cd backend
+           npm i
+           npm audit fix --force
+           npm audit fix --force
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+
+
+      - save_cache:
+          paths: [scan-backend]
+          key: backend-build
+
+
+## slack notification job
+  notify:
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: pass
+          template: success_tagged_deploy_1
+          
+  deploy-infrastructure:
+    docker:
+      - image: 'amazon/aws-cli'
+    steps:
+      - checkout 
+      - run:
+          name: Install tar utility
+          command: |
+            yum install -y tar gzip            
+      - run:
+          name: Ensure back-end infrastructure exists
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/backend.yml \
+              --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  \
+              --tags project=udapeople
+      - run:
+          name: Ensure front-end infrastructure exist
+          command: |
+            aws cloudformation deploy \
+              --template-file .circleci/files/frontend.yml \
+              --tags project=udapeople \
+              --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --parameter-overrides ID="${CIRCLE_WORKFLOW_ID:0:7}"  
+      - run:
+         name: "wait 20 seconds for target connection to become reachable/usable."
+         command: |        
+           sleep 20
+      - run:
+          name: Add back-end ip to ansible inventory
+          command: |
+            touch ~/inventory.txt
+            echo "[web]" > ~/inventory5.txt
+            cat ~/inventory5.txt
+            aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PublicIpAddress]' \
+               --filters "Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+               --output text >> ~/inventory.txt 
+            cat ~/inventory.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - inventory.txt
+      # Here's where you will add some code to rollback on failure      
+
+
+    # Exercise: Config and Deployment
+  configure_infrastructure: 
+    docker:
+      - image: python:3.9.13-alpine3.16 
+    steps:
+      - checkout
+      - add_ssh_keys:
+              # You can get this ID in the section where you registered the SSH Key
+              fingerprints: ["87:e8:25:2e:80:5a:59:1e:76:3f:1c:5d:bf:4b:25:e2"] 
+      - attach_workspace:
+          at: ~/
+      - run:
+          name: Install Ansible
+          command: |
+            apk add --update ansible
+      - run:
+          name: Run Playbook and Configure server
+          command: |
+            ansible-playbook -i ~/inventory.txt .circleci/ansible/configure-server.yml      
+
+workflows:
+  default:
+    jobs:
+      - build-frontend :
+         context: cdond-c3-projectstarter
+      - build-backend :
+         context: cdond-c3-projectstarter
+      - test-frontend:
+         requires: [build-frontend]
+         context: cdond-c3-projectstarter
+      - test-backend:
+         requires: [build-backend]
+         context: cdond-c3-projectstarter
+      - scan-backend:
+          requires: [build-backend]
+          context: cdond-c3-projectstarter
+      - scan-frontend:
+          requires: [build-frontend]
+          context: cdond-c3-projectstarter
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+      - configure_infrastructure:
+          requires:
+           - deploy-infrastructure
+
+
+
+
+      
+
