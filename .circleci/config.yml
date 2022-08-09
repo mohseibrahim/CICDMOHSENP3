@@ -236,7 +236,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: cimg/node:18.7.0
+      - image: 18-alpine3.15
     steps:
       - checkout
       - run:
