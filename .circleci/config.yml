@@ -236,7 +236,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image: 18-alpine3.15
+      - image: cimg/base:2021.04
     steps:
       - checkout
       - run:
