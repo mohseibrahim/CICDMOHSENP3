@@ -275,7 +275,7 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: circleci/node:8.12
+      - image: 'amazon/aws-cli'
     steps:
       - checkout
 
