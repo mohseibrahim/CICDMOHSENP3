@@ -236,14 +236,14 @@ jobs:
 
   run-migrations:
     docker:
-      - image: cimg/node:18.7.0
+      - image : circleci/node:13.8.0
     steps:
       - checkout
       - run:
           name: Run migrations
           command: |
                 cd backend
-                npm install
+                npm i
                 npm audit fix
                 npm audit fix
                 npm run migrations > migrations_dump.txt
