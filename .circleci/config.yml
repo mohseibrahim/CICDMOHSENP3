@@ -282,7 +282,7 @@ jobs:
           name: Install dependencies
           command: |
             yum install -y tar gzip 
-            sudo apt-get install npm
+            apt-get install npm
             npm i
             npm audit fix --force
             apk add --update ansible
