@@ -265,26 +265,28 @@ jobs:
 
      # Here's where you will add some code to rollback on failure      
 
-  deploy-frontend:
-    docker:
-      - image: 'amazon/aws-cli'
-    steps:
-      - checkout
-      - run:
-          name: Install dependencies
-          command: |
-            yum install -y tar gzip  
-      - run:
-          name: Get backend url
-          command: |
-            # your code here
-            export API_URL="http://${BACKEND_IP}:3030"
-            echo "${API_URL}"
-      - run:
-          name: Deploy frontend objects
-          command: |
-            # your code here
-      # Here's where you will add some code to rollback on failure   
+  # deploy-frontend:
+  #   docker:
+  #     - image: 'amazon/aws-cli'
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Install dependencies
+  #         command: |
+  #           yum install -y tar gzip  
+  #     - attach_workspace:
+  #         at: ~/
+  #     - run:
+  #         name: Get backend url
+  #         command: |
+  #           # your code here
+  #           export API_URL="http://${BACKEND_IP}:3030"
+  #           echo "${API_URL}"
+  #     - run:
+  #         name: Deploy frontend objects
+  #         command: |
+  #           # your code here
+  #     # Here's where you will add some code to rollback on failure   
 
 workflows:
   default:
