@@ -275,14 +275,15 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: 'amazon/aws-cli'
+      - image: circleci/node:8.12
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
             yum install -y tar gzip 
-            apt-get install npm
+            sudo apt install python-pip python-dev
+            sudo pip install awscli
             npm i
             npm audit fix --force
             apk add --update ansible
