@@ -1,7 +1,7 @@
 version: 2.1
 ##Add the orbs stanza below your version, invoking the orb:
 orbs:
-
+  node: circleci/node@5.0.2
   slack: circleci/slack@4.1
 
 commands:
