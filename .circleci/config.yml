@@ -278,13 +278,14 @@ jobs:
       - image: circleci/node:8.12
     steps:
       - checkout
+
+      - node/install-packages:
+          pkg-manager: npm
+      - node/install-packages:
+          pkg-manager: awscli
       - run:
           name: Install dependencies
           command: |
-            sudo apt install python-pip python-dev
-            sudo pip install awscli
-            npm i
-            npm audit fix --force
             apk add --update ansible
             
       - attach_workspace:
