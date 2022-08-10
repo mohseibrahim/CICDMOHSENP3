@@ -244,6 +244,7 @@ jobs:
           command: |
                 cd backend
                 npm i
+                npm audit fix --force
                 npm run migrations
 
               # npm audit fix --force
@@ -311,8 +312,11 @@ workflows:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       # - configure_infrastructure:
       #     requires:
-      #      - deploy-infrastructure
-        - run-migrations
+        - deploy-infrastructure
+        - configure-infrastructure:
+           requires: [deploy-infrastructure]
+        - run-migrations:
+           requires: [configure-infrastructure]
 
 
 
