@@ -279,12 +279,12 @@ jobs:
     steps:
       - checkout
 
-      - node/install-packages:
-          pkg-manager: npm
+
       - run:
           name: Install dependencies
           command: |
-            apk add --update ansible
+            npm install
+            npm run build
             
       - attach_workspace:
           at: ~/
