@@ -250,6 +250,7 @@ jobs:
                 cd backend
                 npm i
                 npm audit fix --force
+                ls
                 npm run migrations
 
               # npm audit fix --force
