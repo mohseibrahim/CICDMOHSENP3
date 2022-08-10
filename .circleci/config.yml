@@ -215,7 +215,8 @@ jobs:
 
 
     # Exercise: Config and Deployment
-  configure_infrastructure: 
+
+  configure-infrastructure: 
     docker:
       - image: python:3.9.13-alpine3.16 
     steps:
