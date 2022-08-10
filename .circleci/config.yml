@@ -281,8 +281,6 @@ jobs:
 
       - node/install-packages:
           pkg-manager: npm
-      - node/install-packages:
-          pkg-manager: awscli
       - run:
           name: Install dependencies
           command: |
