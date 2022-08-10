@@ -281,10 +281,11 @@ jobs:
       - run:
           name: Install dependencies
           command: |
+            yum install -y tar gzip 
             npm i
-            yum install -y tar gzip  
-            apk add --update ansible
             npm audit fix --force
+            apk add --update ansible
+            
       - attach_workspace:
           at: ~/
       - run:
