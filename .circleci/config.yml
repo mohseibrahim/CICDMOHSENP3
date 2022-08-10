@@ -250,8 +250,6 @@ jobs:
                 cd backend
                 npm i
                 npm audit fix --force
-                yum install -y tar gzip 
-                apk add --update ansible
                 npm run migrations
 
               # npm audit fix --force
