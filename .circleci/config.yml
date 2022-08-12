@@ -219,8 +219,8 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
             touch ~/inventory.txt
-            echo "[web]" > ~/inventory5.txt
-            cat ~/inventory5.txt
+            echo "[web]" > ~/inventory.txt
+            cat ~/inventory.txt
             aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PublicIpAddress]' \
                --filters "Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
                --output text >> ~/inventory.txt 
@@ -273,7 +273,7 @@ jobs:
                 npm i
                 npm run build
                     # ls
-                npm run migrations > migrations_dump.txt
+                npm run migrations > ~/migrations_dump.txt
 
               # npm audit fix --force
               # npm audit fix --force
