@@ -338,6 +338,8 @@ jobs:
       - add_ssh_keys:
               # You can get this ID in the section where you registered the SSH Key
               fingerprints: ["87:e8:25:2e:80:5a:59:1e:76:3f:1c:5d:bf:4b:25:e2"] 
+      - attach_workspace:
+          at: ~/
       - run:
           name: Install Ansible
           command: |
@@ -350,11 +352,13 @@ jobs:
             cd backend
             apk add --update npm
             apk add --no-cache aws-cli
+            cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
+            cd .circleci/ansible
             echo "Contents  of the inventory  -------"
             cat ~/inventory.txt
-            ansible-playbook -i ~/inventory.txt ~/.circleci/ansible/deploy-backend.yml
+            ansible-playbook -i ~/inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
       - destroy-environment     
 
@@ -467,15 +471,15 @@ workflows:
       #     requires: [test-frontend, test-backend, scan-frontend, scan-backend]
       # - configure_infrastructure:
       #     requires:
-    # - deploy-infrastructure
-    # - configure-infrastructure:
-    #      requires: [deploy-infrastructure]
-    # - run-migrations:
-    #      requires: [configure-infrastructure]
-    # - deploy-frontend:
-    #      requires: [configure-infrastructure]
-    - deploy-backend
-        # requires: [deploy-frontend]
+    - deploy-infrastructure
+    - configure-infrastructure:
+         requires: [deploy-infrastructure]
+    - run-migrations:
+         requires: [configure-infrastructure]
+    - deploy-frontend:
+         requires: [configure-infrastructure]
+    - deploy-backend:
+        requires: [deploy-frontend]
 
 
 
