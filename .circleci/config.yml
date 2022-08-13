@@ -349,7 +349,6 @@ jobs:
           command: |
             cd backend
             apk add --update npm
-            apk add --no-cache aws-cli
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
