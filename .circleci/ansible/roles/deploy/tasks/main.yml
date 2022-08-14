@@ -1,7 +1,7 @@
 - name: create directory
   become: true
   file:
-    path: /direct 
+    path: /home/direct 
     state: directory
 
 
