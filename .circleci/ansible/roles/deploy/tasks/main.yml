@@ -1,8 +1,9 @@
 - name: create directory
+  become: true
   file:
     path: ~/direct
     state: directory
-    mode: '0777'
+    chmod: '0777'
 
 
 - name: copy artifact
