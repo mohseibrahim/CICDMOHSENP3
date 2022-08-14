@@ -1,20 +1,12 @@
-- name: create directory
-  become: true
-  file:
-    path: /home/ubuntu/hoho
-    state: directory
-    mode: '0777'
-
-
 - name: copy artifact
   copy: 
     src: artifact.tar.gz
-    dest: /home/ubuntu/hoho
+    dest: /home/ubuntu/
 
 - name: copy artifact
   copy: 
     src: text.txt
-    dest: /home/ubuntu/hoho
+    dest: /home/ubuntu/
 
 
 
