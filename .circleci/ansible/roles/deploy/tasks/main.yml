@@ -3,11 +3,6 @@
     src: artifact.tar.gz
     dest: /home/ubuntu/
 
-- name: copy artifact
-  copy: 
-    src: text.txt
-    dest: /home/ubuntu/
-
 - name: Extract 
   unarchive:
     src: /home/ubuntu/artifact.tar.gz
