@@ -10,7 +10,7 @@
 
 - name: Extract 
   unarchive:
-    src: /home/ubuntu/artifact.tar.gz
+    src: artifact.tar.gz
     dest: /home/ubuntu/
 
 - name: "install dependencies."
