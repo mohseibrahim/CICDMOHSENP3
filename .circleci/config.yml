@@ -354,11 +354,11 @@ jobs:
             apk add --update aws-cli
             cd ..
             # Zip the directory
+            echo "hello" >> .circleci/ansible/roles/deploy/files/text.txt
             tar -czf artifact.tar.gz backend
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files
             ls .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
-            echo "hello" >> .circleci/ansible/roles/deploy/files/text.txt
             echo "Contents  of the inventory  -------"
             cat inventory.txt
             ansible-playbook -i inventory.txt deploy-backend.yml
