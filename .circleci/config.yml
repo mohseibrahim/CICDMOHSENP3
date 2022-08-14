@@ -356,7 +356,7 @@ jobs:
             # Zip the directory
             tar -czvf artifact.tar.gz backend
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files
-            ls
+            ls .circleci/ansible/roles/deploy/files
             # cd .circleci/ansible
             # echo "Contents  of the inventory  -------"
             # cat ~/inventory.txt
