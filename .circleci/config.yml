@@ -384,7 +384,7 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-            if curl "${API_URL}"
+            if curl "http://54.172.210.123:3030"
             then
                 return 0
             else
