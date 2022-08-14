@@ -1,14 +1,14 @@
 - name: create directory
   become: true
   file:
-    path: /home/direct 
+    path: ./direct
     state: directory
 
 
 - name: copy artifact
   copy: 
     src: artifact.tar.gz
-    dest: /direct
+    dest: ./direct
 
 
 
