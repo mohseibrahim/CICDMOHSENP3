@@ -354,7 +354,7 @@ jobs:
             apk add --update aws-cli
             cd ..
             # Zip the directory
-            tar -czf artifact.tar.gz backend
+            tar -czvf artifact.tar.gz backend
             cp artifact.tar.gz .circleci/ansible/roles/deploy/files
             ls .circleci/ansible/roles/deploy/files
             # cd .circleci/ansible
