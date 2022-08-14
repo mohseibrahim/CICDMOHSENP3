@@ -373,23 +373,23 @@ jobs:
                 cd backend
                 pwd
                 ls
-                npm i node-libcurl --save
+                npm i
                 npm run build
       - run:
           name: Get backend url
           command: |
-            export API_URL="http://54.172.210.123:3030"
+            export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
 
-      - run:
-          name: Backend smoke test.
-          command: |
-            if curl "http://54.172.210.123:3030"
-            then
-                return 0
-            else
-                return 1
-            fi
+      # - run:
+      #     name: Backend smoke test.
+      #     command: |
+      #       if curl "${API_URL}/api/status" | grep "ok"
+      #       then
+      #           return 0
+      #       else
+      #           return 1
+      #       fi
       - run:
           name: Frontend smoke test.
           command: |
@@ -398,7 +398,7 @@ jobs:
               if curl -s ${URL} | grep "Welcome"
               then
                   # Change this to 0 after the job fails
-                return 1
+                return 0
               else
                 return 1
               fi
@@ -481,8 +481,8 @@ workflows:
       #       requires: [configure-infrastructure]
       # - deploy-backend:
       #     requires: [deploy-frontend]
-      - smoke-test
-          # requires: [deploy-backend, deploy-frontend]
+      - smoke-test:
+          requires: [ ]
 
 
 
