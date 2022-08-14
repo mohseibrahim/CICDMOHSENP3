@@ -364,13 +364,13 @@ jobs:
 
   smoke-test:
     docker:
-      - image : circleci/node:13.8.0
+      - image: doctrine/nodejs-aws-cli
     steps:
       - checkout
       - run:
           name: Install dependencies
           command: |
-                # cd backend
+                cd backend
                 # pwd
                 # ls
                 npm i
@@ -378,18 +378,21 @@ jobs:
       - run:
           name: Get backend url
           command: |
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PublicIpAddress]' \
+               --filters "Name=tag-value,Values=backend-d81ac3e" \
+               --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
 
-      # - run:
-      #     name: Backend smoke test.
-      #     command: |
-      #       if curl "${API_URL}/api/status" | grep "ok"
-      #       then
-      #           return 0
-      #       else
-      #           return 1
-      #       fi
+      - run:
+          name: Backend smoke test.
+          command: |
+            if curl "${API_URL}/api/status" | grep "ok"
+            then
+                return 0
+            else
+                return 1
+            fi
       - run:
           name: Frontend smoke test.
           command: |
