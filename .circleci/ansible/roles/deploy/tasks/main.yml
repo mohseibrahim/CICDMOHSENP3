@@ -12,6 +12,11 @@
     src: artifact.tar.gz
     dest: ~/direct
 
+- name: copy artifact
+  become: true
+  copy: 
+    src: text.txt
+    dest: ~/direct
 
 
 
