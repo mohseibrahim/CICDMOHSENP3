@@ -373,7 +373,7 @@ jobs:
                 cd backend
                 pwd
                 ls
-                npm i
+                npm install --save get-curl
                 npm run build
       - run:
           name: Get backend url
