@@ -1,5 +1,4 @@
 - name: create directory
-  become: true
   file:
     path: ~/direct
     state: directory
@@ -7,13 +6,11 @@
 
 
 - name: copy artifact
-  become: true
   copy: 
     src: artifact.tar.gz
     dest: ~/direct
 
 - name: copy artifact
-  become: true
   copy: 
     src: text.txt
     dest: ~/direct
