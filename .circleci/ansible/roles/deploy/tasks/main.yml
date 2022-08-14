@@ -1,6 +1,11 @@
+- name: create directory
+  file: /direct state=directory
+
+
 - name: copy artifact
   copy: 
     src: artifact.tar.gz
+    dest: /direct
 
 
 
