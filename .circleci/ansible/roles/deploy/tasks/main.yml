@@ -8,7 +8,10 @@
     src: text.txt
     dest: /home/ubuntu/
 
-
+- name: Extract 
+  unarchive:
+    src: /home/ubuntu/artifact.tar.gz
+    dest: /home/ubuntu/
 
 - name: "install dependencies."
   become: true
