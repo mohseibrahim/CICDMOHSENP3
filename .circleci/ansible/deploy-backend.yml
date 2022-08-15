@@ -14,7 +14,7 @@
   pre_tasks:
     - name: "wait 100 seconds for target connection to become reachable/usable."
       wait_for:
-         timeout: 100
+         timeout: 10
 
   roles:
     - deploy
