@@ -1,12 +1,12 @@
 - name: copy artifact
   copy: 
     src: artifact.tar.gz
-    dest: ~/
+    dest: /home/ubuntu/
 
 - name: Extract 
   unarchive:
-    src: ~/artifact.tar.gz
-    dest: ~/
+    src: /home/ubuntu/artifact.tar.gz
+    dest: /home/ubuntu/
     remote_src: yes
 
 - name: "install dependencies."
@@ -15,6 +15,8 @@
     name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
+  args:
+    chdir: /home/ubuntu/
 
 - name: "install pm2"
   npm:
@@ -22,19 +24,20 @@
     global: yes
     production: yes
     state: present
+  args:
+    chdir: /home/ubuntu/
 
 - name: Executing node1
   command: |
     npm run build
   args:
-    chdir: ~/
+    chdir: /home/ubuntu/
 
 - name: Executing node
   command: |
-    pm2 stop default
     pm2 start main.js 
   args:
-    chdir: ~/dist
+    chdir: /home/ubuntu/dist
   environment:
     ENVIRONMENT: production
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}" 
