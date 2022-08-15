@@ -16,6 +16,9 @@
     state: latest
     update_cache: yes
 
+- name: Build app
+  command: npm run build
+
 - name: "install pm2"
   become: true
   npm:
