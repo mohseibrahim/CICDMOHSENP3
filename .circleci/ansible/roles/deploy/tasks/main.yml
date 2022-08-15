@@ -24,17 +24,9 @@
     state: present
     path: /home/ubuntu/
 
-- name: "install tsc"
-  npm:
-    name: tsc
-    global: yes
-    production: yes
-    state: present
-    path: /home/ubuntu/
-
-
 - name: Executing node1
   command: |
+    npm i
     npm run build
   args: 
    chdir: /home/ubuntu/
