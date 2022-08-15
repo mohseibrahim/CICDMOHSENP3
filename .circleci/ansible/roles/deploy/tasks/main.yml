@@ -23,9 +23,11 @@
     production: yes
     state: present
 
-- name: Executing node
+- name: Executing node1
   command: |
     npm run build
+  args:
+    chdir: /home/ubuntu/
 
 - name: Executing node
   command: |
