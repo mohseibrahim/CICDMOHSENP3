@@ -15,8 +15,7 @@
     name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
-  args:
-    chdir: /home/ubuntu/
+    path: /home/ubuntu/
 
 - name: "install pm2"
   npm:
@@ -24,14 +23,20 @@
     global: yes
     production: yes
     state: present
+    path: /home/ubuntu/
+
+- name: install npm
+  become: true
+  shell: npm install --save express
   args:
     chdir: /home/ubuntu/
+
 
 - name: Executing node1
   command: |
     npm run build
-  args:
-    chdir: /home/ubuntu/
+  args: 
+   chdir: /home/ubuntu/
 
 - name: Executing node
   command: |
