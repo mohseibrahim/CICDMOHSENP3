@@ -15,7 +15,6 @@
     name: ["nodejs", "npm"]
     state: latest
     update_cache: yes
-    path: /home/ubuntu/
 
 - name: "install pm2"
   npm:
