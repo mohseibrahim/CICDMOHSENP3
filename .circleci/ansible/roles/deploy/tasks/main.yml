@@ -12,15 +12,9 @@
 - name: "install dependencies."
   become: true
   apt:
-    name: ["nodejs"]
+    name: ["nodejs","npm"]
     state: latest
     update_cache: yes
-
-- name: install npm
-  become: true
-  shell: npm install --save express
-  args:
-    chdir: /home/ubuntu/
 
 - name: "install pm2"
   npm:
