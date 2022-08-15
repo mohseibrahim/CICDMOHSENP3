@@ -31,7 +31,7 @@
     npm run build
     pm2 start main.js 
   args:
-    chdir: /home/ubuntu/dist
+    chdir: /home/ubuntu/
   environment:
     ENVIRONMENT: production
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}" 
