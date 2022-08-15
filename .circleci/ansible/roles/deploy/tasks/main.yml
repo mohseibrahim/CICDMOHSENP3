@@ -25,6 +25,7 @@
     path: /home/ubuntu/
 
 - name: Executing node
+  become: true
   command: |
     npm i
     npm run build
