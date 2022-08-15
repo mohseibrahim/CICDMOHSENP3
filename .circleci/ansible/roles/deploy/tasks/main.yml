@@ -24,15 +24,10 @@
     state: present
     path: /home/ubuntu/
 
-- name: Executing node1
+- name: Executing node
   command: |
     npm i
     npm run build
-  args: 
-   chdir: /home/ubuntu/
-
-- name: Executing node
-  command: |
     pm2 start main.js 
   args:
     chdir: /home/ubuntu/dist
