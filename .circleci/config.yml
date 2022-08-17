@@ -344,14 +344,16 @@ jobs:
           name: Install Ansible
           command: |
             apk add --update ansible
+            apk add --update nodejs npm 
+            apk add --update aws-cli
       - attach_workspace:
           at: ~/      
       - run:
           name: Deploy backend
           command: |
             cd backend
-            apk add --update npm
-            apk add --update aws-cli
+            npm i
+            npm run build
             cd ..
             # Zip the directory
             tar -C backend -czvf artifact.tar.gz .
@@ -465,22 +467,22 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend :
-         context: cdond-c3-projectstarter
-      - build-backend :
-         context: cdond-c3-projectstarter
-      - test-frontend:
-         requires: [build-frontend]
-         context: cdond-c3-projectstarter
-      - test-backend:
-         requires: [build-backend]
-         context: cdond-c3-projectstarter
-      - scan-backend:
-          requires: [build-backend]
-          context: cdond-c3-projectstarter
-      - scan-frontend:
-          requires: [build-frontend]
-          context: cdond-c3-projectstarter
+      # - build-frontend :
+      #    context: cdond-c3-projectstarter
+      # - build-backend :
+      #    context: cdond-c3-projectstarter
+      # - test-frontend:
+      #    requires: [build-frontend]
+      #    context: cdond-c3-projectstarter
+      # - test-backend:
+      #    requires: [build-backend]
+      #    context: cdond-c3-projectstarter
+      # - scan-backend:
+      #     requires: [build-backend]
+      #     context: cdond-c3-projectstarter
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      #     context: cdond-c3-projectstarter
       - deploy-infrastructure:
           requires: [ ]
       - configure-infrastructure:

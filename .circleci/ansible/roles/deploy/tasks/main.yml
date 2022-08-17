@@ -1,12 +1,18 @@
+- name: Creates directory
+  file:
+    path: ~/web
+    state: directory
+
+
 - name: copy artifact
   copy: 
     src: artifact.tar.gz
-    dest: /home/ubuntu/
+    dest: ~/web
 
 - name: Extract 
   unarchive:
-    src: /home/ubuntu/artifact.tar.gz
-    dest: /home/ubuntu/
+    src: ~/web/artifact.tar.gz
+    dest: ~/web
     remote_src: yes
 
 - name: "install dependencies."
@@ -22,16 +28,14 @@
     global: yes
     production: yes
     state: present
-    path: /home/ubuntu/
+    path: ~/web
 
 - name: Executing node
   become: true
   command: |
-    npm i
-    npm run build
     pm2 start main.js 
   args:
-    chdir: /home/ubuntu/
+    chdir: ~/web/dist
   environment:
     ENVIRONMENT: production
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}" 
