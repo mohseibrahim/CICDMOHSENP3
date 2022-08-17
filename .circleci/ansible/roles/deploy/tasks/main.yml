@@ -31,11 +31,10 @@
     path: ~/web
 
 - name: Executing node
-  become: true
   command: |
     pm2 start main.js 
   args:
-    chdir: ~/web/dist
+    chdir: /home/ubuntu/web/dist
   environment:
     ENVIRONMENT: production
     TYPEORM_CONNECTION: "{{ lookup('env', 'TYPEORM_CONNECTION')}}" 
