@@ -15,7 +15,7 @@ commands:
           command: |
 
             echo "Destroying environment:5a32733"
-            aws s3 rm S3://udapeople-5a32733 --recursive
+            aws s3 rm s3://udapeople-5a32733 --recursive
             aws cloudformation delete-stack --stack-name udapeople-backend-5a32733
             aws cloudformation delete-stack --stack-name udapeople-forntend-5a32733
 
