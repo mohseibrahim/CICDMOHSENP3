@@ -34,7 +34,7 @@ commands:
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
-                cd ~/project/backend
+                cd backend
                 npm install
                 npm run migration:revert
             fi  
@@ -399,6 +399,7 @@ jobs:
               else
                 return 1
               fi
+              revert-migrations
       - run:
           name: Backend smoke test.
           command: |
@@ -487,8 +488,8 @@ workflows:
       #     requires: [ ]
       # - configure-infrastructure:
       #       requires: [deploy-infrastructure]
-      # - run-migrations:
-      #       requires: [configure-infrastructure]
+        - run-migrations:
+            requires: [ ]
       # - deploy-frontend:
       #       requires: [configure-infrastructure]
       # - deploy-backend:
