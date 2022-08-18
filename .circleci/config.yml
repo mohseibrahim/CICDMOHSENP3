@@ -361,8 +361,8 @@ jobs:
             ls .circleci/ansible/roles/deploy/files
             cd .circleci/ansible
             echo "Contents  of the inventory  -------"
-            cat ~/inventory.txt
-            ansible-playbook -i ~/inventory.txt deploy-backend.yml
+            cat inventory.txt
+            ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
       #- destroy-environment     
 
@@ -383,7 +383,7 @@ jobs:
           name: Get backend url
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PublicIpAddress]' \
-               --filters "Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7" \
+               --filters "Name=tag-value,Values=backend-5a32733" \
                --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -403,7 +403,7 @@ jobs:
           name: Backend smoke test.
           command: |
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].[PublicIpAddress]' \
-               --filters "Name=tag-value,Values=backend-${CIRCLE_WORKFLOW_ID:0:7" \
+               --filters "Name=tag-value,Values=backend-5a32733" \
                --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -431,7 +431,7 @@ jobs:
             aws cloudformation deploy \
             --template-file .circleci/files/cloudfront.yml \
             --stack-name InitialStack \
-            --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            --parameter-overrides WorkflowID="udapeople-5a32733" \
             --tags project=udapeople
       # Here's where you will add some code to rollback on failure  
 
@@ -448,7 +448,7 @@ jobs:
                         list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
                         --no-paginate --output text)
                 echo OldWorkflowID: "${OldWorkflowID}"
-                echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
+                echo CIRCLE_WORKFLOW_ID "5a32733"
                 # Fetch the stack names          
                 export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
                         --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
@@ -483,18 +483,18 @@ workflows:
       # - scan-frontend:
       #     requires: [build-frontend]
       #     context: cdond-c3-projectstarter
-      - deploy-infrastructure:
-          requires: [ ]
-      - configure-infrastructure:
-            requires: [deploy-infrastructure]
-      - run-migrations:
-            requires: [configure-infrastructure]
-      - deploy-frontend:
-            requires: [configure-infrastructure]
-      - deploy-backend:
-         requires: [deploy-frontend]
+      # - deploy-infrastructure:
+      #     requires: [ ]
+      # - configure-infrastructure:
+      #       requires: [deploy-infrastructure]
+      # - run-migrations:
+      #       requires: [configure-infrastructure]
+      # - deploy-frontend:
+      #       requires: [configure-infrastructure]
+      # - deploy-backend:
+      #    requires: [deploy-frontend]
       - smoke-test:
-         requires: [deploy-backend]
+         requires: []
 
 
 
