@@ -492,7 +492,7 @@ workflows:
       - deploy-frontend:
             requires: [configure-infrastructure]
       - deploy-backend:
-         requires: []
+         requires: [deploy-frontend]
       - smoke-test:
          requires: [deploy-backend]
 
