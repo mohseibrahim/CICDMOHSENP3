@@ -13,10 +13,10 @@ commands:
           when: on_fail
           command: |
 
-            echo "Destroying environment:${CIRCLE_WORKFLOW_ID:0:7}"
-            aws s3 rm S3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} -- RECURSIVE
-            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
-            aws cloudformation delete-stack --stack-name udapeople-forntend-${CIRCLE_WORKFLOW_ID:0:7}
+            echo "Destroying environment:5a32733"
+            aws s3 rm S3://udapeople-5a32733 -- RECURSIVE
+            aws cloudformation delete-stack --stack-name udapeople-backend-5a32733
+            aws cloudformation delete-stack --stack-name udapeople-forntend-5a32733
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -28,9 +28,10 @@ commands:
       - run:
           name: Revert migrations
           # Add when this will run
+          when: on_fail
           command: |
             # Curl command here to see if there was a successful migration associated with the workflow id, store result in SUCCESS variable
-            SUCCESS=$(curl --insecure  https://kvdb.io/9GE4jRtKznmVKRfvdBABBe/migration_<< parameters.workflow_id >>)
+            SUCCESS=$(curl --insecure  https://kvdb.io/9GE4jRtKznmVKRfvdBABBe/migration_5a32733)
             # Logic for reverting the database state
             if (( $SUCCESS == 1 ));
             then
@@ -399,7 +400,6 @@ jobs:
               else
                 return 1
               fi
-              revert-migrations
       - run:
           name: Backend smoke test.
           command: |
@@ -414,6 +414,8 @@ jobs:
             else
                 return 1
             fi
+      - destroy-environment
+      - revert-migrations
 
       # Here's where you will add some code to rollback on failure  
 
@@ -495,7 +497,7 @@ workflows:
       # - deploy-backend:
       #    requires: [deploy-frontend]
         - smoke-test:
-            requires: []
+            requires: [run-migrations]
 
 
 
