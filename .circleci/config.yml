@@ -427,7 +427,7 @@ jobs:
 
   cloudfront-update:
     docker:
-      - image: 'amazon/aws-cli'
+      - image: doctrine/nodejs-aws-cli
     steps:
       - checkout
       - run:
@@ -461,7 +461,7 @@ jobs:
 
   cleanup:
       docker:
-        - image: 'amazon/aws-cli'
+      - image: doctrine/nodejs-aws-cli
       steps:
         - checkout
               # your code here
