@@ -11,6 +11,7 @@ commands:
     parameters:
       workflow_id:
         type: string 
+        default: ${CIRCLE_WORKFLOW_ID}
     steps:
       - run:
           name: Destroy environments
@@ -27,7 +28,8 @@ commands:
     parameters:
       # Add parameter here   
         workflow_id:
-         type: string   
+         type: string  
+         default: ${CIRCLE_WORKFLOW_ID:0:7}          
     steps:
       - run:
           name: Revert migrations
