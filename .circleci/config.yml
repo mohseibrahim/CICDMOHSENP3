@@ -509,22 +509,22 @@ workflows:
       # - scan-frontend:
       #     requires: [build-frontend]
       #     context: cdond-c3-projectstarter
-        - deploy-infrastructure:
-            requires: [ ]
-        - configure-infrastructure:
-            requires: [deploy-infrastructure]
-        # - run-migrations:
+        # - deploy-infrastructure:
+        #     requires: [ ]
+        # - configure-infrastructure:
+        #     requires: [deploy-infrastructure]
+        # # - run-migrations:
+        # #     requires: [configure-infrastructure]
+        # - deploy-frontend:
         #     requires: [configure-infrastructure]
-        - deploy-frontend:
-            requires: [configure-infrastructure]
-        - deploy-backend:
-            requires: [deploy-frontend]
-        - smoke-test:
-            requires: [deploy-backend]
-        - cloudfront-update:
-            requires: [smoke-test]
-        # - cleanup:
-        #     requires: [cloudfront-update]
+        # - deploy-backend:
+        #     requires: [deploy-frontend]
+        # - smoke-test:
+        #     requires: [deploy-backend]
+        # - cloudfront-update:
+        #     requires: [smoke-test]
+        - cleanup:
+            requires: [ ]
 
 
 
