@@ -496,41 +496,41 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend :
-      #    context: cdond-c3-projectstarter
-      # - build-backend :
-      #    context: cdond-c3-projectstarter
-      # - test-frontend:
-      #    requires: [build-frontend]
-      #    context: cdond-c3-projectstarter
-      # - test-backend:
-      #    requires: [build-backend]
-      #    context: cdond-c3-projectstarter
-      # - scan-backend:
-      #     requires: [build-backend]
-      #     context: cdond-c3-projectstarter
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      #     context: cdond-c3-projectstarter
-        # - deploy-infrastructure:
-        #     requires: [ ]
-        #     filters:
-        #      branches:
-        #        only: main
-        # - configure-infrastructure:
-        #     requires: [deploy-infrastructure]
-        # - run-migrations:
-        #     requires: [configure-infrastructure]
-        # - deploy-frontend:
-        #     requires: [configure-infrastructure]
-        # - deploy-backend:
-        #     requires: [deploy-frontend]
-        # - smoke-test:
-        #     requires: [deploy-backend]
-        # - cloudfront-update:
-        #     requires: [smoke-test]
-        - cleanup:
-            requires: [ ]
+      - build-frontend :
+         context: cdond-c3-projectstarter
+      - build-backend :
+         context: cdond-c3-projectstarter
+      - test-frontend:
+         requires: [build-frontend]
+         context: cdond-c3-projectstarter
+      - test-backend:
+         requires: [build-backend]
+         context: cdond-c3-projectstarter
+      - scan-backend:
+          requires: [build-backend]
+          context: cdond-c3-projectstarter
+      - scan-frontend:
+          requires: [build-frontend]
+          context: cdond-c3-projectstarter
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: main
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [configure-infrastructure]
+      - deploy-backend:
+          requires: [deploy-frontend]
+      - smoke-test:
+          requires: [deploy-backend]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [smoke-test]
 
 
 
