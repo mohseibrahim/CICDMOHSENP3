@@ -300,7 +300,8 @@ jobs:
             fi
 
       # $\{CIRCLE_WORKFLOW_ID:0:7\} Here's where you will add some code to rollback on failure  
-      #- destroy-environment        
+      #- destroy-environment   
+      - destroy-environment      
 
   deploy-frontend:
     docker:
@@ -335,7 +336,8 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure  
-      #- destroy-environment    
+      #- destroy-environment  
+      - destroy-environment   
 
   deploy-backend:
     docker:
@@ -371,7 +373,8 @@ jobs:
             cat ~/inventory.txt
             ansible-playbook -i ~/inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure  
-      #- destroy-environment     
+      #- destroy-environment  
+      - destroy-environment    
 
   smoke-test:
     docker:
@@ -424,6 +427,7 @@ jobs:
       - revert-migrations
 
       # Here's where you will add some code to rollback on failure  
+      - destroy-environment 
 
   cloudfront-update:
     docker:
@@ -460,6 +464,7 @@ jobs:
           paths:
             - OldWorkflowID.txt     
       # Here's where you will add some code to rollback on failure  
+      - destroy-environment 
 
   cleanup:
       docker:
@@ -496,41 +501,41 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-frontend :
-      #    context: cdond-c3-projectstarter
-      # - build-backend :
-      #    context: cdond-c3-projectstarter
-      # - test-frontend:
-      #    requires: [build-frontend]
-      #    context: cdond-c3-projectstarter
-      # - test-backend:
-      #    requires: [build-backend]
-      #    context: cdond-c3-projectstarter
-      # - scan-backend:
-      #     requires: [build-backend]
-      #     context: cdond-c3-projectstarter
-      # - scan-frontend:
-      #     requires: [build-frontend]
-      #     context: cdond-c3-projectstarter
-        - deploy-infrastructure:
-            requires: [ ]
-            filters:
-             branches:
-               only: main
-        - configure-infrastructure:
-            requires: [deploy-infrastructure]
-        - run-migrations:
-            requires: [configure-infrastructure]
-        - deploy-frontend:
-            requires: [configure-infrastructure]
-        - deploy-backend:
-            requires: [deploy-frontend]
-        - smoke-test:
-            requires: [deploy-backend]
-        # - cloudfront-update:
-        #     requires: [smoke-test]
-        # - cleanup:
-        #     requires: [ ]
+      - build-frontend :
+         context: cdond-c3-projectstarter
+      - build-backend :
+         context: cdond-c3-projectstarter
+      - test-frontend:
+         requires: [build-frontend]
+         context: cdond-c3-projectstarter
+      - test-backend:
+         requires: [build-backend]
+         context: cdond-c3-projectstarter
+      - scan-backend:
+          requires: [build-backend]
+          context: cdond-c3-projectstarter
+      - scan-frontend:
+          requires: [build-frontend]
+          context: cdond-c3-projectstarter
+      - deploy-infrastructure:
+          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          filters:
+            branches:
+              only: main
+      - configure-infrastructure:
+          requires: [deploy-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
+      - deploy-frontend:
+          requires: [run-migrations]
+      - deploy-backend:
+          requires: [run-migrations]
+      - smoke-test:
+          requires: [deploy-backend, deploy-frontend]
+      - cloudfront-update:
+          requires: [smoke-test]
+      - cleanup:
+          requires: [cloudfront-update]
 
 
 
