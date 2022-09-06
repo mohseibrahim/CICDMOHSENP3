@@ -282,8 +282,8 @@ jobs:
                  ls
                 npm run migrations > ~/migrations_dump.txt
 
-                npm audit fix --force
-                npm audit fix --force
+              # npm audit fix --force
+              # npm audit fix --force
 
                  
       # - persist_to_workspace:
@@ -346,7 +346,7 @@ jobs:
       - checkout
       - add_ssh_keys:
               # You can get this ID in the section where you registered the SSH Key
-              fingerprints: ["f0:02:c5:30:66:9f:58:c0:22:be:b2:47:5e:7e:45:19"] 
+              fingerprints: ["87:e8:25:2e:80:5a:59:1e:76:3f:1c:5d:bf:4b:25:e2"] 
       - attach_workspace:
           at: ~/
       - run:
@@ -524,12 +524,12 @@ workflows:
               only: main
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       - deploy-frontend:
-          requires: [configure-infrastructure]
+          requires: [run-migrations]
       - deploy-backend:
-          requires: [configure-infrastructure]
+          requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       # - cloudfront-update:
