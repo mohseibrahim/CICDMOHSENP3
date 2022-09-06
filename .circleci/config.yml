@@ -286,18 +286,18 @@ jobs:
               # npm audit fix --force
 
                  
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - migrations_dump.txt
-      - run:
-          name: Send migration results to kvdb.io
-          command: |
+      # - persist_to_workspace:
+      #     root: ~/
+      #     paths:
+      #       - migrations_dump.txt
+      # - run:
+      #     name: Send migration results to kvdb.io
+      #     command: |
 
-            if grep -q "has been executed successfully." ~/migrations_dump.txt
-             then
-               curl https://kvdb.io/Jce3YAmVgtSBJnGJLiDTRg/migration_ee554d6  -k '1'
-            fi
+      #       if grep -q "has been executed successfully." ~/migrations_dump.txt
+      #        then
+      #          curl https://kvdb.io/Jce3YAmVgtSBJnGJLiDTRg/migration_ee554d6  -k '1'
+      #       fi
 
       # $\{CIRCLE_WORKFLOW_ID:0:7\} Here's where you will add some code to rollback on failure  
       #- destroy-environment   
@@ -501,24 +501,24 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-frontend :
-         context: cdond-c3-projectstarter
-      - build-backend :
-         context: cdond-c3-projectstarter
-      - test-frontend:
-         requires: [build-frontend]
-         context: cdond-c3-projectstarter
-      - test-backend:
-         requires: [build-backend]
-         context: cdond-c3-projectstarter
-      - scan-backend:
-          requires: [build-backend]
-          context: cdond-c3-projectstarter
-      - scan-frontend:
-          requires: [build-frontend]
-          context: cdond-c3-projectstarter
+      # - build-frontend :
+      #    context: cdond-c3-projectstarter
+      # - build-backend :
+      #    context: cdond-c3-projectstarter
+      # - test-frontend:
+      #    requires: [build-frontend]
+      #    context: cdond-c3-projectstarter
+      # - test-backend:
+      #    requires: [build-backend]
+      #    context: cdond-c3-projectstarter
+      # - scan-backend:
+      #     requires: [build-backend]
+      #     context: cdond-c3-projectstarter
+      # - scan-frontend:
+      #     requires: [build-frontend]
+      #     context: cdond-c3-projectstarter
       - deploy-infrastructure:
-          requires: [test-frontend, test-backend, scan-frontend, scan-backend]
+          requires: []
           filters:
             branches:
               only: main
@@ -532,10 +532,10 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      - cloudfront-update:
-          requires: [smoke-test]
-      - cleanup:
-          requires: [cloudfront-update]
+      # - cloudfront-update:
+      #     requires: [smoke-test]
+      # - cleanup:
+      #     requires: [cloudfront-update]
 
 
 
