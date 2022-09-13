@@ -271,7 +271,7 @@ jobs:
 
   run-migrations:
     docker:
-      - image : circleci/node:13.8.0
+      - image : circleci/node:14.16.0
     steps:
       - checkout 
       - run:
@@ -528,12 +528,12 @@ workflows:
               only: main
       - configure-infrastructure:
           requires: [deploy-infrastructure]
-      # - run-migrations:
-      #     requires: [configure-infrastructure]
+      - run-migrations:
+          requires: [configure-infrastructure]
       - deploy-frontend:
-          requires: [configure-infrastructure]
+          requires: [run-migrations]
       - deploy-backend:
-          requires: [configure-infrastructure]
+          requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
       - cloudfront-update:
