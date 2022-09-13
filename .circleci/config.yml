@@ -166,12 +166,14 @@ jobs:
       - run:
          command : |
            cd backend
-          #  sudo npm install -g npm-check-updates
-          #  npm-check-updates
-          #  ncu  -u
            npm install
            npm audit fix --force
            npm audit fix --audit-level=critical --force
+
+
+          #  sudo npm install -g npm-check-updates
+          #  npm-check-updates
+          #  ncu  -u
       - slack/notify:
           channel: $SLACK_DEFAULT_CHANNEL
           event: fail
