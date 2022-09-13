@@ -158,7 +158,7 @@ jobs:
 
   scan-backend:
     docker:
-      - image : circleci/node:12.17.0
+      - image : circleci/node:14.0.0
     steps:
       - checkout
       - restore_cache:
