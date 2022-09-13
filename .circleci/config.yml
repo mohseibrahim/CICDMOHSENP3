@@ -280,9 +280,6 @@ jobs:
                 cd backend
                 pwd
                 ls
-                sudo npm install -g npm-check-updates
-                npm-check-updates
-                ncu  -u
                 npm install
                 npm run build
                  ls
