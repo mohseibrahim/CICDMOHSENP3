@@ -284,14 +284,12 @@ jobs:
                 npm-check-updates
                 ncu  -u
                 npm install
-                npm audit fix --force
-                npm audit fix --audit-level=critical --force
                 npm run build
                  ls
                 npm run migrations > ~/migrations_dump.txt
  
                 npm audit fix --force
-                npm audit fix --force
+                npm audit fix --audit-level=critical --force
 
                  
       - persist_to_workspace:
