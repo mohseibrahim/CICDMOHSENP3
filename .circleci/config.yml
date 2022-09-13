@@ -281,8 +281,8 @@ jobs:
                 npm run build
                  ls
                 npm run migrations > ~/migrations_dump.txt
-                npm audit fix --force
-                npm audit fix --force
+        # npm audit fix --force
+                # npm audit fix --force
 
 
                  
