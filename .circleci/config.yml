@@ -166,7 +166,10 @@ jobs:
       - run:
          command : |
            cd backend
-           npm i
+           sudo npm install -g npm-check-updates
+           npm-check-updates
+           ncu  -u
+           npm install
            npm audit fix --force
            npm audit fix --audit-level=critical --force
       - slack/notify:
