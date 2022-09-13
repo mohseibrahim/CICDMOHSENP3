@@ -283,11 +283,10 @@ jobs:
                 npm i
                 npm run build
                  ls
-                npm audit fix --audit-level=critical --force
                 npm run migrations > ~/migrations_dump.txt
  
-                npm audit fix --audit-level=critical --force
-                npm audit fix --audit-level=critical --force
+                npm audit fix --force
+                npm audit fix --force
 
                  
       - persist_to_workspace:
